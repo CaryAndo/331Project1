@@ -72,11 +72,24 @@ def recursive_multiply(a, b):
         b22[index] = row[int(len(b)/2):len(b)]
 
     c11 = matrix_add(recursive_multiply(a11, b11), recursive_multiply(a12, b21))
+    c12 = matrix_add(recursive_multiply(a11, b12), recursive_multiply(a12, b22))
+    c21 = matrix_add(recursive_multiply(a21, b11), recursive_multiply(a22, b21))
+    c22 = matrix_add(recursive_multiply(a21, b12), recursive_multiply(a22, b22))
 
-    print_matrix(a11)
-    print_matrix(a12)
-    print_matrix(a21)
-    print_matrix(a22)
+    for row_index, row in enumerate(c11):
+        row.append(c12[row_index])
+
+    for row_index, row in enumerate(c21):
+        row.append(c22[row_index])
+
+    c11.append(c21)
+
+    return c11
+
+    #print_matrix(a11)
+    #print_matrix(a12)
+    #print_matrix(a21)
+    #print_matrix(a22)
 
 
 def print_matrix(matr):
@@ -110,6 +123,9 @@ if __name__ == '__main__':
     cE = [[1, 3],
          [4, 4]]
 
-    c = matrix_add(bE, cE)
+    c = naive_multiply(bE, cE)
+    d = recursive_multiply(bE, cE)
 
     print_matrix(c)
+
+    print_matrix(d)
