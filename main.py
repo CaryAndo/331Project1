@@ -1,8 +1,9 @@
 def matrix_add(a, b):
+    """ Add two matrices """
     c = [[0 for j in range(len(a[0]))] for i in range(len(a))]
     for row_index, i in enumerate(a):
         for col_index, j in enumerate(i):
-            c[row_index][col_index] = i[col_index] + j
+            c[row_index][col_index] = a[row_index][col_index] + b[row_index][col_index]
     return c
 
 
@@ -71,30 +72,28 @@ def recursive_multiply(a, b):
     for index, row in enumerate(b22):
         b22[index] = row[int(len(b)/2):len(b)]
 
-    c11 = matrix_add(recursive_multiply(a11, b11), recursive_multiply(a12, b21))
-    c12 = matrix_add(recursive_multiply(a11, b12), recursive_multiply(a12, b22))
-    c21 = matrix_add(recursive_multiply(a21, b11), recursive_multiply(a22, b21))
-    c22 = matrix_add(recursive_multiply(a21, b12), recursive_multiply(a22, b22))
+    c11 = matrix_add(recursive_multiply(a11, b11), recursive_multiply(a12, b21))  # C11 = A11*B11 + A12*B21
+    c12 = matrix_add(recursive_multiply(a11, b12), recursive_multiply(a12, b22))  # C12 = A11*B12 + A12*B22
+    c21 = matrix_add(recursive_multiply(a21, b11), recursive_multiply(a22, b21))  # C21 = A21*B11 + A22*B21
+    c22 = matrix_add(recursive_multiply(a21, b12), recursive_multiply(a22, b22))  # C22 = A21*B12 + A22*B22
 
     for row_index, row in enumerate(c11):
-        row.append(c12[row_index])
+        for col_index, col in enumerate(c12):
+            row.append(c12[row_index][col_index])
 
     for row_index, row in enumerate(c21):
-        row.append(c22[row_index])
+        for col_index, col in enumerate(c12):
+            row.append(c22[row_index][col_index])
 
-    c11.append(c21)
+    for i in c21:
+        c11.append(i)
 
     return c11
 
-    #print_matrix(a11)
-    #print_matrix(a12)
-    #print_matrix(a21)
-    #print_matrix(a22)
 
-
-def print_matrix(matr):
+def print_matrix(matrix):
     """ Print a matrix.. """
-    for i in matr:
+    for i in matrix:
         print(i)
     print("")
 
@@ -111,20 +110,26 @@ def pad_uneven_matrix(matrix):
 
     return matrix
 
+
 if __name__ == '__main__':
     aE = [[1, 4, 5, 6],
          [1, 1, 1, 6],
          [1, 9, 8, 6],
          [1, 9, 8, 6]]
 
-    bE = [[1, 3],
-         [4, 4]]
+    bE = [[3, 4, 5, 3],
+         [2, 3, 4, 2],
+         [7, 3, 3, 2],
+         [4, 1, 4, 1]]
 
     cE = [[1, 3],
          [4, 4]]
 
-    c = naive_multiply(bE, cE)
-    d = recursive_multiply(bE, cE)
+    dE = [[3,5],
+         [1, 6]]
+
+    c = naive_multiply(aE, bE)
+    d = recursive_multiply(aE, bE)
 
     print_matrix(c)
 
