@@ -1,4 +1,9 @@
-from math import ceil
+def matrix_add(a, b):
+    c = [[0 for j in range(len(a[0]))] for i in range(len(a))]
+    for row_index, i in enumerate(a):
+        for col_index, j in enumerate(i):
+            c[row_index][col_index] = i[col_index] + j
+    return c
 
 
 def naive_multiply(a, b):
@@ -30,7 +35,7 @@ def naive_multiply(a, b):
 
 
 def recursive_multiply(a, b):
-    """ This method only works with  """
+    """ This method only works with square matrices """
     if len(a) == 2:
         return naive_multiply(a, b)
 
@@ -66,6 +71,8 @@ def recursive_multiply(a, b):
     for index, row in enumerate(b22):
         b22[index] = row[int(len(b)/2):len(b)]
 
+    c11 = matrix_add(recursive_multiply(a11, b11), recursive_multiply(a12, b21))
+
     print_matrix(a11)
     print_matrix(a12)
     print_matrix(a21)
@@ -100,6 +107,9 @@ if __name__ == '__main__':
     bE = [[1, 3],
          [4, 4]]
 
-    recursive_multiply(aE, bE)
+    cE = [[1, 3],
+         [4, 4]]
 
-#    print_matrix(c)
+    c = matrix_add(bE, cE)
+
+    print_matrix(c)
