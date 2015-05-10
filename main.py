@@ -3,20 +3,20 @@ import random
 
 def matrix_add(a, b):
     """ Add two matrices """
-    c = [[0 for j in range(len(a[0]))] for i in range(len(a))]
+    m = [[0 for j in range(len(a[0]))] for i in range(len(a))]
     for row_index, i in enumerate(a):
         for col_index, j in enumerate(i):
-            c[row_index][col_index] = a[row_index][col_index] + b[row_index][col_index]
-    return c
+            m[row_index][col_index] = a[row_index][col_index] + b[row_index][col_index]
+    return m
 
 
 def matrix_subtract(a, b):
     """ Subtract two matrices """
-    c = [[0 for j in range(len(a[0]))] for i in range(len(a))]
+    m = [[0 for j in range(len(a[0]))] for i in range(len(a))]
     for row_index, i in enumerate(a):
         for col_index, j in enumerate(i):
-            c[row_index][col_index] = a[row_index][col_index] - b[row_index][col_index]
-    return c
+            m[row_index][col_index] = a[row_index][col_index] - b[row_index][col_index]
+    return m
 
 
 def generate_random_matrix(n):
@@ -27,7 +27,6 @@ def generate_random_matrix(n):
 def naive_multiply(a, b):
     """ Naive matrix multiplication, _should_ be O(n^3) """
     m = len(a)  # Number of rows in first matrix
-    n = len(a[0])  # Number of columns in the second matrix
     k = len(b)  # Number of rows in the second matrix
     res = []
     p = len(b[0])
