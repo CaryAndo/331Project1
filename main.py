@@ -1,3 +1,6 @@
+import random
+
+
 def matrix_add(a, b):
     """ Add two matrices """
     c = [[0 for j in range(len(a[0]))] for i in range(len(a))]
@@ -16,31 +19,28 @@ def matrix_subtract(a, b):
     return c
 
 
+def generate_random_matrix(n):
+    """ Generate a random nXn matrix """
+    return [[random.randint(1, 50) for i in range(n)] for j in range(n)]
+
+
 def naive_multiply(a, b):
     """ Naive matrix multiplication, _should_ be O(n^3) """
     m = len(a)  # Number of rows in first matrix
     n = len(a[0])  # Number of columns in the second matrix
     k = len(b)  # Number of rows in the second matrix
     res = []
-    if len(b) != 1:
-        p = len(b[0])
-    else:
-        p = 0
-    if len(b) == 0:
-        print('Second param is not big enough')
-    elif n != k:
-        print('Size mismatch!')
-    else:
-        n = k
-        for q in range(m):
-            res.append([0])
-        for q in range(m):
-            for w in range(p - 1):
-                res[q].append(0)
-        for i in range(m):
-            for j in range(p):
-                for r in range(n):
-                    res[i][j] = a[i][r] * b[r][j] + res[i][j]
+    p = len(b[0])
+    n = k
+    for q in range(m):
+        res.append([0])
+    for q in range(m):
+        for w in range(p - 1):
+            res[q].append(0)
+    for i in range(m):
+        for j in range(p):
+            for r in range(n):
+                res[i][j] = a[i][r] * b[r][j] + res[i][j]
     return res
 
 
@@ -49,37 +49,37 @@ def recursive_multiply(a, b):
     if len(a) == 2:
         return naive_multiply(a, b)
 
-    a11 = a[0:int(len(a)/2)]
+    a11 = a[0:int(len(a) / 2)]
     for index, row in enumerate(a11):
-        a11[index] = row[0:int(len(row)/2)]
+        a11[index] = row[0:int(len(row) / 2)]
 
-    a12 = a[0:int(len(a)/2)]
+    a12 = a[0:int(len(a) / 2)]
     for index, row in enumerate(a12):
-        a12[index] = row[int(len(a)/2):len(a)]
+        a12[index] = row[int(len(a) / 2):len(a)]
 
-    a21 = a[int(len(a)/2):len(a)]
+    a21 = a[int(len(a) / 2):len(a)]
     for index, row in enumerate(a21):
-        a21[index] = row[0:int(len(row)/2)]
+        a21[index] = row[0:int(len(row) / 2)]
 
-    a22 = a[int(len(a)/2):len(a)]
+    a22 = a[int(len(a) / 2):len(a)]
     for index, row in enumerate(a22):
-        a22[index] = row[int(len(a)/2):len(a)]
+        a22[index] = row[int(len(a) / 2):len(a)]
 
-    b11 = b[0:int(len(b)/2)]
+    b11 = b[0:int(len(b) / 2)]
     for index, row in enumerate(b11):
-        b11[index] = row[0:int(len(row)/2)]
+        b11[index] = row[0:int(len(row) / 2)]
 
-    b12 = b[0:int(len(b)/2)]
+    b12 = b[0:int(len(b) / 2)]
     for index, row in enumerate(b12):
-        b12[index] = row[int(len(b)/2):len(b)]
+        b12[index] = row[int(len(b) / 2):len(b)]
 
-    b21 = b[int(len(b)/2):len(b)]
+    b21 = b[int(len(b) / 2):len(b)]
     for index, row in enumerate(b21):
-        b21[index] = row[0:int(len(row)/2)]
+        b21[index] = row[0:int(len(row) / 2)]
 
-    b22 = b[int(len(b)/2):len(b)]
+    b22 = b[int(len(b) / 2):len(b)]
     for index, row in enumerate(b22):
-        b22[index] = row[int(len(b)/2):len(b)]
+        b22[index] = row[int(len(b) / 2):len(b)]
 
     c11 = matrix_add(recursive_multiply(a11, b11), recursive_multiply(a12, b21))  # C11 = A11*B11 + A12*B21
     c12 = matrix_add(recursive_multiply(a11, b12), recursive_multiply(a12, b22))  # C12 = A11*B12 + A12*B22
@@ -107,37 +107,37 @@ def strassen(a, b):
     if len(a) == 2:
         return naive_multiply(a, b)
 
-    a11 = a[0:int(len(a)/2)]
+    a11 = a[0:int(len(a) / 2)]
     for index, row in enumerate(a11):
-        a11[index] = row[0:int(len(row)/2)]
+        a11[index] = row[0:int(len(row) / 2)]
 
-    a12 = a[0:int(len(a)/2)]
+    a12 = a[0:int(len(a) / 2)]
     for index, row in enumerate(a12):
-        a12[index] = row[int(len(a)/2):len(a)]
+        a12[index] = row[int(len(a) / 2):len(a)]
 
-    a21 = a[int(len(a)/2):len(a)]
+    a21 = a[int(len(a) / 2):len(a)]
     for index, row in enumerate(a21):
-        a21[index] = row[0:int(len(row)/2)]
+        a21[index] = row[0:int(len(row) / 2)]
 
-    a22 = a[int(len(a)/2):len(a)]
+    a22 = a[int(len(a) / 2):len(a)]
     for index, row in enumerate(a22):
-        a22[index] = row[int(len(a)/2):len(a)]
+        a22[index] = row[int(len(a) / 2):len(a)]
 
-    b11 = b[0:int(len(b)/2)]
+    b11 = b[0:int(len(b) / 2)]
     for index, row in enumerate(b11):
-        b11[index] = row[0:int(len(row)/2)]
+        b11[index] = row[0:int(len(row) / 2)]
 
-    b12 = b[0:int(len(b)/2)]
+    b12 = b[0:int(len(b) / 2)]
     for index, row in enumerate(b12):
-        b12[index] = row[int(len(b)/2):len(b)]
+        b12[index] = row[int(len(b) / 2):len(b)]
 
-    b21 = b[int(len(b)/2):len(b)]
+    b21 = b[int(len(b) / 2):len(b)]
     for index, row in enumerate(b21):
-        b21[index] = row[0:int(len(row)/2)]
+        b21[index] = row[0:int(len(row) / 2)]
 
-    b22 = b[int(len(b)/2):len(b)]
+    b22 = b[int(len(b) / 2):len(b)]
     for index, row in enumerate(b22):
-        b22[index] = row[int(len(b)/2):len(b)]
+        b22[index] = row[int(len(b) / 2):len(b)]
 
     p = strassen(matrix_add(a11, a22), matrix_add(b11, b22))
     q = strassen(matrix_add(a21, a22), b11)
@@ -176,42 +176,26 @@ def print_matrix(matrix):
     print("")
 
 
-def pad_uneven_matrix(matrix):
-    new_matrix = matrix
-
-    if len(matrix) % 2 != 0:
-        new_matrix.append([0 for i in range(len(new_matrix[0]))])  # Append a new row of 0's
-
-    if len(matrix[0]) % 2 != 0:
-        for row in new_matrix:
-            row.append(0)  # Append a 0 to the end of each row (add a column)
-
-    return matrix
-
-
 if __name__ == '__main__':
-    aE = [[1, 4, 5, 6],
-         [1, 1, 1, 6],
-         [1, 9, 8, 6],
-         [1, 9, 8, 6]]
+    import time
 
-    bE = [[3, 4, 5, 3],
-         [2, 3, 4, 2],
-         [7, 3, 3, 2],
-         [4, 1, 4, 1]]
+    for z in range(1, 10):
+        print(str(2**z) + 'X' + str(2**z) + ' elements:')
+        ma = generate_random_matrix(2**z)
+        mb = generate_random_matrix(2**z)
+        c = []
+        t1 = time.time()
+        c = naive_multiply(ma, mb)
+        t2 = time.time()
+        print('Naive: ' + str((t2 - t1)*1000) + 'ms')
 
-    cE = [[1, 3],
-         [4, 4]]
+        t1 = time.time()
+        c = recursive_multiply(ma, mb)
+        t2 = time.time()
+        print('Recursive: ' + str((t2 - t1)*1000) + 'ms')
 
-    dE = [[3,5],
-         [1, 6]]
-
-    a = naive_multiply(aE, bE)
-    b = recursive_multiply(aE, bE)
-    c = strassen(aE, bE)
-
-    print_matrix(a)
-
-    print_matrix(b)
-
-    print_matrix(c)
+        t1 = time.time()
+        c = strassen(ma, mb)
+        t2 = time.time()
+        print('Strassen: ' + str((t2 - t1)*1000) + 'ms')
+        print("")
