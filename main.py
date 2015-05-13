@@ -1,4 +1,5 @@
 import random
+import threading
 
 
 def matrix_add(a, b):
@@ -43,7 +44,7 @@ def naive_multiply(a, b):
     return res
 
 
-def recursive_multiply(a, b):
+def recursive_multiply(a, b, branch=False, output=None):
     """ This method only works with square matrices """
     if len(a) == 2:
         return naive_multiply(a, b)
@@ -80,10 +81,54 @@ def recursive_multiply(a, b):
     for index, row in enumerate(b22):
         b22[index] = row[int(len(b) / 2):len(b)]
 
-    c11 = matrix_add(recursive_multiply(a11, b11), recursive_multiply(a12, b21))  # C11 = A11*B11 + A12*B21
-    c12 = matrix_add(recursive_multiply(a11, b12), recursive_multiply(a12, b22))  # C12 = A11*B12 + A12*B22
-    c21 = matrix_add(recursive_multiply(a21, b11), recursive_multiply(a22, b21))  # C21 = A21*B11 + A22*B21
-    c22 = matrix_add(recursive_multiply(a21, b12), recursive_multiply(a22, b22))  # C22 = A21*B12 + A22*B22
+    if branch == True and output != None:
+        first_piece = []
+        second_piece = []
+        third_piece = []
+        fourth_piece = []
+        fifth_piece = []
+        sixth_piece = []
+        seventh_piece = []
+        eighth_piece = []
+
+        thr1 = threading.Thread(target=recursive_multiply, args=(a11, b11, False, first_piece))
+        thr2 = threading.Thread(target=recursive_multiply, args=(a12, b21, False, second_piece))
+        thr3 = threading.Thread(target=recursive_multiply, args=(a11, b12, False, third_piece))
+        thr4 = threading.Thread(target=recursive_multiply, args=(a12, b22, False, fourth_piece))
+        thr5 = threading.Thread(target=recursive_multiply, args=(a21, b11, False, fifth_piece))
+        thr6 = threading.Thread(target=recursive_multiply, args=(a22, b21, False, sixth_piece))
+        thr7 = threading.Thread(target=recursive_multiply, args=(a21, b11, False, seventh_piece))
+        thr8 = threading.Thread(target=recursive_multiply, args=(a22, b22, False, eighth_piece))
+
+        thr1.start()
+        thr2.start()
+        thr1.join()
+        thr2.join()
+
+        thr3.start()
+        thr4.start()
+        thr3.join()
+        thr4.join()
+
+        thr5.start()
+        thr6.start()
+        thr5.join()
+        thr6.join()
+
+        thr7.start()
+        thr8.start()
+        thr7.join()
+        thr8.join()
+
+        c11 = matrix_add(first_piece, second_piece)
+        c12 = matrix_add(third_piece, fourth_piece)
+        c21 = matrix_add(fifth_piece, sixth_piece)
+        c22 = matrix_add(seventh_piece, eighth_piece)
+    else:
+        c11 = matrix_add(recursive_multiply(a11, b11), recursive_multiply(a12, b21))  # C11 = A11*B11 + A12*B21
+        c12 = matrix_add(recursive_multiply(a11, b12), recursive_multiply(a12, b22))  # C12 = A11*B12 + A12*B22
+        c21 = matrix_add(recursive_multiply(a21, b11), recursive_multiply(a22, b21))  # C21 = A21*B11 + A22*B21
+        c22 = matrix_add(recursive_multiply(a21, b12), recursive_multiply(a22, b22))  # C22 = A21*B12 + A22*B22
 
     # Append c12 to c11
     for row_index, row in enumerate(c11):
@@ -98,6 +143,9 @@ def recursive_multiply(a, b):
     # Append c21 to c11
     for i in c21:
         c11.append(i)
+
+    if output != None:
+        output = c11
 
     return c11
 
@@ -189,7 +237,8 @@ if __name__ == '__main__':
         print('Naive: ' + str((t2 - t1)*1000) + 'ms')
 
         t1 = time.time()
-        c = recursive_multiply(ma, mb)
+        finished = []
+        c = recursive_multiply(ma, mb, True, finished)
         t2 = time.time()
         print('Recursive: ' + str((t2 - t1)*1000) + 'ms')
 
